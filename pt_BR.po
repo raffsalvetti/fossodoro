@@ -1,0 +1,107 @@
+# FOSSODORO, A GTK POMODORO TIMER FOR LINUX.
+# Copyright (C) 2025
+# This file is distributed under the same license as the PACKAGE package.
+# RAFFAELLO SALVETTI <RAFFAELLO.SALVETTI@GMAIL.COM>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-02 16:23-0300\n"
+"PO-Revision-Date: 2025-03-06 10:20-0300\n"
+"Last-Translator: RAFFAELLO SALVETTI <RAFFAELLO.SALVETTI@GMAIL.COM>\n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+
+#: main.c:274
+msgid "Pomodoro"
+msgstr "Pomodoro"
+
+#: main.c:275
+msgid "Short Break"
+msgstr "Intervalo Curto"
+
+#: main.c:275
+msgid "Long Break"
+msgstr "Intervalo Longo"
+
+#: main.c:276
+#, c-format
+msgid "%s - %02d:%02d remaining"
+msgstr "%s - %02d:%02d restando"
+
+#: main.c:289 main.c:300 main.c:472 main.c:671 main.c:687
+msgid "Pomodoro Timer"
+msgstr "Cronômetro Pomodoro"
+
+#: main.c:289
+msgid "Pomodoro session ended!"
+msgstr "O tempo Pomodoro acabou!"
+
+#: main.c:300
+msgid "Break ended! Unpause to continue."
+msgstr "O intervalo terminou! O cronometro está em pausa."
+
+#: main.c:532
+msgid "Please enter valid positive numbers."
+msgstr "Por favor, use números positivos."
+
+#: main.c:566
+msgid "Configuration"
+msgstr "Configuração"
+
+#: main.c:576
+msgid "Pomodoro Duration (minutes):"
+msgstr "Duração do Pomodoro (minutos):"
+
+#: main.c:577
+msgid "Break Duration (minutes):"
+msgstr "Duração do Intervalo (minutos):"
+
+#: main.c:578
+msgid "Long Break Duration (minutes):"
+msgstr "Duração do Intervalo Longo (minutos):"
+
+#: main.c:579
+msgid "Pomodoros before Long Break:"
+msgstr "Pomodoros antes do Intervalo Longo:"
+
+#: main.c:580
+msgid "Volume Level:"
+msgstr "Nível do Volume:"
+
+#: main.c:580
+msgid "Notification Delay (seconds):"
+msgstr "Tempo da Notificação (segundos):"
+
+#: main.c:612
+msgid "Save"
+msgstr "Salvar"
+
+#: main.c:633
+msgid "Pause"
+msgstr "Pause"
+
+#: main.c:633
+msgid "Start"
+msgstr "Iniciar"
+
+#: main.c:638
+msgid "Stop"
+msgstr "Parar"
+
+#: main.c:643
+msgid "Toggle Chronometer"
+msgstr "Alternar Cronômetro"
+
+#: main.c:647
+msgid "Configure"
+msgstr "Configurar"
+
+#: main.c:651
+msgid "Quit"
+msgstr "Sair"

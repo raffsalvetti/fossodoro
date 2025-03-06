@@ -1,0 +1,106 @@
+# FOSSODORO, A GTK POMODORO TIMER FOR LINUX.
+# Copyright (C) 2025
+# This file is distributed under the same license as the PACKAGE package.
+# RAFFAELLO SALVETTI <RAFFAELLO.SALVETTI@GMAIL.COM>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-02 16:23-0300\n"
+"PO-Revision-Date: 2025-02-02 16:23-0300\n"
+"Last-Translator: RAFFAELLO SALVETTI <RAFFAELLO.SALVETTI@GMAIL.COM>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: main.c:274
+msgid "Pomodoro"
+msgstr ""
+
+#: main.c:275
+msgid "Short Break"
+msgstr ""
+
+#: main.c:275
+msgid "Long Break"
+msgstr ""
+
+#: main.c:276
+#, c-format
+msgid "%s - %02d:%02d remaining"
+msgstr ""
+
+#: main.c:289 main.c:300 main.c:472 main.c:671 main.c:687
+msgid "Pomodoro Timer"
+msgstr ""
+
+#: main.c:289
+msgid "Pomodoro session ended!"
+msgstr ""
+
+#: main.c:300
+msgid "Break ended! Unpause to continue."
+msgstr ""
+
+#: main.c:532
+msgid "Please enter valid positive numbers."
+msgstr ""
+
+#: main.c:566
+msgid "Configuration"
+msgstr ""
+
+#: main.c:576
+msgid "Pomodoro Duration (minutes):"
+msgstr ""
+
+#: main.c:577
+msgid "Break Duration (minutes):"
+msgstr ""
+
+#: main.c:578
+msgid "Long Break Duration (minutes):"
+msgstr ""
+
+#: main.c:579
+msgid "Pomodoros before Long Break:"
+msgstr ""
+
+#: main.c:580
+msgid "Volume Level:"
+msgstr ""
+
+#: main.c:580
+msgid "Notification Delay (seconds):"
+msgstr ""
+
+#: main.c:612
+msgid "Save"
+msgstr ""
+
+#: main.c:633
+msgid "Pause"
+msgstr ""
+
+#: main.c:633
+msgid "Start"
+msgstr ""
+
+#: main.c:638
+msgid "Stop"
+msgstr ""
+
+#: main.c:643
+msgid "Toggle Chronometer"
+msgstr ""
+
+#: main.c:647
+msgid "Configure"
+msgstr ""
+
+#: main.c:651
+msgid "Quit"
+msgstr ""
