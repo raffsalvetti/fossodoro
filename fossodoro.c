@@ -453,6 +453,7 @@ static void create_chronometer_floating_window() {
         gtk_window_set_keep_above(GTK_WINDOW(always_on_top_window), TRUE);
         gtk_window_set_decorated(GTK_WINDOW(always_on_top_window), FALSE);
         gtk_window_set_resizable(GTK_WINDOW(always_on_top_window), FALSE);
+        gtk_window_stick(GTK_WINDOW(always_on_top_window));
 
         gtk_widget_add_events(always_on_top_window, GDK_BUTTON_PRESS_MASK);
         g_signal_connect(always_on_top_window, "button-press-event", G_CALLBACK(on_always_on_top_button_press), NULL);
