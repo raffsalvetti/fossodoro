@@ -1,12 +1,11 @@
 #include <gtk/gtk.h>
 #include <libnotify/notify.h>
 #include <pthread.h>
-#include <ao/ao.h>
-#include <mpg123.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "osd.h"
+#include "sound.h"
 
 #ifndef DATADIR
 #define DATADIR                 "./"
@@ -15,8 +14,6 @@
 #define GETTEXT_PACKAGE         "fossodoro"
 #include <locale.h>
 #include <glib/gi18n.h>
-
-#define BITS                    8
 
 #define DEFAULT_ICON            DATADIR "icons/100.svg"
 #define ICON_100                DATADIR "icons/100.svg"
@@ -103,49 +100,6 @@ static const char* select_icon();
 static void on_play_pause_button_clicked();
 static const char *get_current_mode_string();
 static char *get_config_path();
-
-void *play_audio(void *volume) {
-    ao_device *device;
-    ao_sample_format sample_format;
-    
-    mpg123_handle *mh;
-    size_t outmemsize, done;
-    
-    unsigned char *outmemory;
-    int driver_id, channels, encoding, error, rate;
-    double vol = *(double*)volume;
-
-    ao_initialize();
-    driver_id = ao_default_driver_id();
-
-    mpg123_init();
-    mh = mpg123_new(NULL, &error);
-    outmemsize = mpg123_outblock(mh);
-    outmemory = (unsigned char*) malloc(outmemsize * sizeof(unsigned char));
-
-    mpg123_open(mh, DEFAULT_DING_FILE);
-    mpg123_getformat(mh, &rate, &channels, &encoding);
-    mpg123_volume(mh, vol);
-
-    sample_format.channels = channels;
-    sample_format.bits = mpg123_encsize(encoding) * BITS;
-    sample_format.byte_format = AO_FMT_NATIVE;
-    sample_format.rate = rate;
-    sample_format.matrix = 0;
-    
-    device = ao_open_live(driver_id, &sample_format, NULL);
-    
-    while (mpg123_read(mh, outmemory, outmemsize, &done) == MPG123_OK)
-        ao_play(device, outmemory, done);
-
-    free(outmemory);
-    mpg123_close(mh);
-    mpg123_delete(mh);
-    mpg123_exit();
-
-    ao_close(device);
-    ao_shutdown();
-}
 
 static const char* select_icon() {
     int val = 0, duration = 0; 
@@ -246,7 +200,7 @@ static void show_notification(const char *title, const char *message) {
     notify_notification_show(notification, NULL);
     g_object_unref(G_OBJECT(notification));
 
-    osd_run(message, 3);
+    osd_run(message, 2);
 }
 
 static void update_application_icon() {
@@ -277,9 +231,12 @@ static gboolean timer_callback() {
     if (app.remaining_seconds < 1) {
 
         if (app.volume_level > 0) {
-            double vol = app.volume_level / 100.0;
+            sound_play_data_t sound_play_data;
+            sound_play_data.audio_file = DEFAULT_DING_FILE;
+            sound_play_data.volume = app.volume_level / 100.0;
+            
             pthread_t play_audio_thread;
-            pthread_create(&play_audio_thread, NULL, play_audio, &vol);
+            pthread_create(&play_audio_thread, NULL, sound_play, &sound_play_data);
         }
 
         if (app.current_mode == MODE_POMODORO) {

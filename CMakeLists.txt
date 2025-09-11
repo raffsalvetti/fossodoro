@@ -7,6 +7,7 @@ set(CMAKE_C_STANDARD 99)
 set(SOURCES
     fossodoro.c
     osd.c
+    sound.c
 )
 
 # Find required packages
