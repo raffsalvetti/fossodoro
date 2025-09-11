@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "osd.h"
 
 #ifndef DATADIR
 #define DATADIR                 "./"
@@ -13,7 +14,7 @@
 
 #define GETTEXT_PACKAGE         "fossodoro"
 #include <locale.h>
-#include <glib/gi18n-lib.h>
+#include <glib/gi18n.h>
 
 #define BITS                    8
 
@@ -116,6 +117,16 @@ void *play_audio(void *volume) {
 
     ao_initialize();
     driver_id = ao_default_driver_id();
+
+    mpg123_init();
+    mh = mpg123_new(NULL, &error);
+    outmemsize = mpg123_outblock(mh);
+    outmemory = (unsigned char*) malloc(outmemsize * sizeof(unsigned char));
+
+    mpg123_open(mh, DEFAULT_DING_FILE);
+    mpg123_getformat(mh, &rate, &channels, &encoding);
+    mpg123_volume(mh, vol);
+
     sample_format.channels = channels;
     sample_format.bits = mpg123_encsize(encoding) * BITS;
     sample_format.byte_format = AO_FMT_NATIVE;
@@ -123,15 +134,7 @@ void *play_audio(void *volume) {
     sample_format.matrix = 0;
     
     device = ao_open_live(driver_id, &sample_format, NULL);
-
-    mpg123_init();
-    mh = mpg123_new(NULL, &error);
-    outmemsize = mpg123_outblock(mh);
-    outmemory = (unsigned char*) malloc(outmemsize * sizeof(unsigned char));
-    mpg123_open(mh, DEFAULT_DING_FILE);
-    mpg123_getformat(mh, &rate, &channels, &encoding);
-    mpg123_volume(mh, vol);
-
+    
     while (mpg123_read(mh, outmemory, outmemsize, &done) == MPG123_OK)
         ao_play(device, outmemory, done);
 
@@ -242,6 +245,8 @@ static void show_notification(const char *title, const char *message) {
     notify_notification_set_timeout(notification, app.notification_delay * 1000);
     notify_notification_show(notification, NULL);
     g_object_unref(G_OBJECT(notification));
+
+    osd_run(message, 3);
 }
 
 static void update_application_icon() {
