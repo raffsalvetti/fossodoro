@@ -49,6 +49,9 @@ msgstr ""
 msgid "Please enter valid positive numbers."
 msgstr ""
 
+msgid "Are you sure you want to stop the timer?"
+msgstr ""
+
 #: main.c:566
 msgid "Configuration"
 msgstr ""

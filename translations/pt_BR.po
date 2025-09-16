@@ -50,6 +50,9 @@ msgstr "O intervalo terminou! O cronometro está em pausa."
 msgid "Please enter valid positive numbers."
 msgstr "Por favor, use números positivos."
 
+msgid "Are you sure you want to stop the timer?"
+msgstr "Tem certeza que quer parar o cronometro?"
+
 #: main.c:566
 msgid "Configuration"
 msgstr "Configuração"

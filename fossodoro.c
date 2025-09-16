@@ -406,6 +406,24 @@ static gboolean on_always_on_top_button_press(GtkWidget *widget, GdkEventButton 
     return FALSE;
 }
 
+static void on_stop_button_clicked_confirm() {
+    if (!app.timer_active) return;
+    GtkWidget *dialog = gtk_message_dialog_new(
+        GTK_WINDOW(NULL),
+        GTK_DIALOG_MODAL,
+        GTK_MESSAGE_QUESTION,
+        GTK_BUTTONS_YES_NO,
+        "%s", _("Are you sure you want to stop the timer?")
+    );
+    int response = gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+
+    if (response != GTK_RESPONSE_YES)
+        return;
+
+    on_stop_button_clicked();
+}
+
 static void create_chronometer_floating_window() {
     if (!always_on_top_window) {
         always_on_top_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -446,7 +464,7 @@ static void create_chronometer_floating_window() {
         GtkWidget *stop_image = gtk_image_new_from_icon_name("media-playback-stop", GTK_ICON_SIZE_SMALL_TOOLBAR);
         gtk_button_set_image(GTK_BUTTON(stop_button), stop_image);
         gtk_box_pack_start(GTK_BOX(hbox), stop_button, FALSE, FALSE, 0);
-        g_signal_connect(stop_button, "clicked", G_CALLBACK(on_stop_button_clicked), NULL);
+        g_signal_connect(stop_button, "clicked", G_CALLBACK(on_stop_button_clicked_confirm), NULL);
 
         play_pause_button = gtk_button_new();
         GtkWidget *play_image = gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_SMALL_TOOLBAR);

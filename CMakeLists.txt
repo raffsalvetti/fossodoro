@@ -61,6 +61,28 @@ target_link_libraries(fossodoro
     m
 )
 
+# Build translation files (*.po -> *.mo)
+file(GLOB PO_FILES "${CMAKE_SOURCE_DIR}/translations/*.po")
+foreach(PO_FILE ${PO_FILES})
+    get_filename_component(LANG_NAME ${PO_FILE} NAME_WE)
+    set(MO_DIR "${CMAKE_SOURCE_DIR}/locale/${LANG_NAME}/LC_MESSAGES")
+    set(MO_FILE "${MO_DIR}/fossodoro.mo")
+    add_custom_command(
+        OUTPUT ${MO_FILE}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${MO_DIR}
+        COMMAND msgfmt -o ${MO_FILE} ${PO_FILE}
+        DEPENDS ${PO_FILE}
+        COMMENT "Compiling translation for ${LANG_NAME}"
+        VERBATIM
+    )
+    list(APPEND MO_FILES ${MO_FILE})
+endforeach()
+
+if(MO_FILES)
+    add_custom_target(translations ALL DEPENDS ${MO_FILES})
+    add_dependencies(fossodoro translations)
+endif()
+
 # For pkg-config .pc files
 link_directories(
     ${GTK3_LIBRARY_DIRS}
