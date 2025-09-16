@@ -8,7 +8,7 @@
 #include "sound.h"
 
 #ifndef DATADIR
-#define DATADIR                 "./"
+#define DATADIR                 "../share/fossodoro/"
 #endif
 
 #define GETTEXT_PACKAGE         "fossodoro"
@@ -32,7 +32,7 @@
 #define ICON_PLAY               DATADIR "icons/play.svg"
 #define ICON_PAUSE              DATADIR "icons/pause.svg"
 
-#define DEFAULT_DING_FILE       DATADIR "sound/ding2.mp3"
+#define DEFAULT_DING_FILE       DATADIR "sounds/ding2.mp3"
 
 #define CONFIG_FILE             "fossodoro.cfg"
 

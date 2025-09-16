@@ -46,6 +46,10 @@ add_definitions(
 # Executable
 add_executable(fossodoro ${SOURCES})
 
+set_target_properties(fossodoro PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
 # Link libraries
 target_link_libraries(fossodoro
     ${GTK3_LIBRARIES}
@@ -65,7 +69,7 @@ target_link_libraries(fossodoro
 file(GLOB PO_FILES "${CMAKE_SOURCE_DIR}/translations/*.po")
 foreach(PO_FILE ${PO_FILES})
     get_filename_component(LANG_NAME ${PO_FILE} NAME_WE)
-    set(MO_DIR "${CMAKE_SOURCE_DIR}/locale/${LANG_NAME}/LC_MESSAGES")
+    set(MO_DIR "${CMAKE_SOURCE_DIR}/share/locale/${LANG_NAME}/LC_MESSAGES")
     set(MO_FILE "${MO_DIR}/fossodoro.mo")
     add_custom_command(
         OUTPUT ${MO_FILE}
@@ -95,18 +99,30 @@ link_directories(
 # Install target (optional)
 install(TARGETS fossodoro DESTINATION bin)
 
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/share/icons DESTINATION share/fossodoro)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/share/images DESTINATION share/fossodoro)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/share/locale DESTINATION share/fossodoro)
+
 add_custom_command(
     TARGET fossodoro POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/icons $<TARGET_FILE_DIR:fossodoro>/icons
+        ${CMAKE_SOURCE_DIR}/share/icons $<TARGET_FILE_DIR:fossodoro>/../share/fossodoro/icons
 )
+
 add_custom_command(
     TARGET fossodoro POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:fossodoro>/images
+        ${CMAKE_SOURCE_DIR}/share/sounds $<TARGET_FILE_DIR:fossodoro>/../share/fossodoro/sounds
 )
+
 add_custom_command(
     TARGET fossodoro POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/locale $<TARGET_FILE_DIR:fossodoro>/locale
+        ${CMAKE_SOURCE_DIR}/share/locale $<TARGET_FILE_DIR:fossodoro>/../share/fossodoro/locale
+)
+
+add_custom_command(
+    TARGET fossodoro POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/share/images $<TARGET_FILE_DIR:fossodoro>/../share/fossodoro/images
 )
