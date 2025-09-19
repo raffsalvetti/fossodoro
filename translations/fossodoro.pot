@@ -33,6 +33,9 @@ msgstr ""
 msgid "%s - %02d:%02d remaining"
 msgstr ""
 
+msgid "%s (%d) - %02d:%02d remaining"
+msgstr ""
+
 #: main.c:289 main.c:300 main.c:472 main.c:671 main.c:687
 msgid "Pomodoro Timer"
 msgstr ""

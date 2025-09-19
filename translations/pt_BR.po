@@ -34,6 +34,9 @@ msgstr "Intervalo Longo"
 msgid "%s - %02d:%02d remaining"
 msgstr "%s - %02d:%02d restando"
 
+msgid "%s (%d) - %02d:%02d remaining"
+msgstr "%s (%d) - %02d:%02d restando"
+
 #: main.c:289 main.c:300 main.c:472 main.c:671 main.c:687
 msgid "Pomodoro Timer"
 msgstr "Cronômetro Pomodoro"

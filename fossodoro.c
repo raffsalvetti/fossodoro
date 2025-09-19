@@ -36,6 +36,7 @@
 
 #define CONFIG_FILE             "fossodoro.cfg"
 
+#define ICON_SIZE               GTK_ICON_SIZE_SMALL_TOOLBAR
 
 typedef enum {
     MODE_POMODORO,
@@ -206,11 +207,8 @@ static void show_notification(const char *title, const char *message) {
 static void update_application_icon() {
     const char *icon = select_icon();
     if(strcmp(icon, app.current_icon) != 0) {
-        GIcon *old_icon;
         app.current_icon = icon;
-        old_icon = gtk_status_icon_get_gicon(tray_icon);
         gtk_status_icon_set_from_file(tray_icon, app.current_icon);
-        g_free(old_icon);
     }
 }
 
@@ -222,7 +220,12 @@ static gboolean timer_callback() {
     int seconds = app.remaining_seconds % 60;
     char tooltip[128];
     const char *mode_str = get_current_mode_string();
-    snprintf(tooltip, sizeof(tooltip), "%s - %02d:%02d remaining", mode_str, minutes, seconds);
+
+    if(app.current_mode == MODE_POMODORO)
+        snprintf(tooltip, sizeof(tooltip), _("%s (%d) - %02d:%02d remaining"), mode_str, app.current_pomodoro_count + 1, minutes, seconds);
+    else
+        snprintf(tooltip, sizeof(tooltip), _("%s - %02d:%02d remaining"), mode_str, minutes, seconds);
+
     gtk_status_icon_set_tooltip_text(tray_icon, tooltip);
 
     if (app.always_on_top_enabled && always_on_top_chronometer)
@@ -274,11 +277,14 @@ static void update_always_on_top_label() {
     gtk_label_set_text(GTK_LABEL(always_on_top_chronometer), text);
 
     const char *mode_str = get_current_mode_string();
-    snprintf(mode_str_label, sizeof(mode_str_label), "%s", mode_str);
+    if(app.current_mode == MODE_POMODORO)
+        snprintf(mode_str_label, sizeof(mode_str_label), "%s (%d)", mode_str, app.current_pomodoro_count + 1);
+    else  
+        snprintf(mode_str_label, sizeof(mode_str_label), "%s", mode_str);
     gtk_label_set_text(GTK_LABEL(always_on_top_label), mode_str_label);
 
     const char *img_path = app.timer_active ? (app.timer_paused ? ICON_PAUSE : (app.current_mode == MODE_POMODORO ? DEFAULT_ICON : ICON_BREAK)) : DEFAULT_ICON;
-    GdkPixbuf *p_buf = gdk_pixbuf_new_from_file_at_size(img_path, 32, 32, NULL);
+    GdkPixbuf *p_buf = gdk_pixbuf_new_from_file_at_size(img_path, 16, 16, NULL);
     gtk_image_set_from_pixbuf(GTK_IMAGE(always_on_top_icon), p_buf);
 }
 
@@ -287,9 +293,9 @@ static void update_play_pause_icon() {
         GtkWidget *image;
         
         if (app.timer_active && !app.timer_paused) {
-            image = gtk_image_new_from_icon_name("media-playback-pause", GTK_ICON_SIZE_BUTTON);
+            image = gtk_image_new_from_icon_name("media-playback-pause", ICON_SIZE);
         } else {
-            image = gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_BUTTON);
+            image = gtk_image_new_from_icon_name("media-playback-start", ICON_SIZE);
         }
         update_application_icon();
         update_always_on_top_label();
@@ -440,19 +446,10 @@ static void create_chronometer_floating_window() {
         GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_container_set_border_width(GTK_CONTAINER(hbox), 1);
         
-        GdkPixbuf *p_buf = gdk_pixbuf_new_from_file_at_size(DEFAULT_ICON, 8, 8, NULL);
+        GdkPixbuf *p_buf = gdk_pixbuf_new_from_file_at_size(DEFAULT_ICON, 16, 16, NULL);
         always_on_top_icon = gtk_image_new_from_pixbuf(p_buf);
 
-        gtk_box_pack_start(GTK_BOX(hbox), always_on_top_icon, FALSE, FALSE, 0);
-
-        // GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
-        // gtk_box_pack_start(GTK_BOX(hbox), vbox, TRUE, TRUE, 0);
-
-        // always_on_top_label = gtk_label_new("Mode");
-        // gtk_box_pack_start(GTK_BOX(vbox), always_on_top_label, TRUE, TRUE, 0);
-
-        // always_on_top_chronometer = gtk_label_new("00:00");
-        // gtk_box_pack_start(GTK_BOX(vbox), always_on_top_chronometer, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(hbox), always_on_top_icon, FALSE, FALSE, 4);
 
         always_on_top_label = gtk_label_new("Mode");
         gtk_box_pack_start(GTK_BOX(hbox), always_on_top_label, TRUE, TRUE, 0);
@@ -461,13 +458,13 @@ static void create_chronometer_floating_window() {
         gtk_box_pack_start(GTK_BOX(hbox), always_on_top_chronometer, TRUE, TRUE, 0);
 
         stop_button = gtk_button_new();
-        GtkWidget *stop_image = gtk_image_new_from_icon_name("media-playback-stop", GTK_ICON_SIZE_SMALL_TOOLBAR);
+        GtkWidget *stop_image = gtk_image_new_from_icon_name("media-playback-stop", ICON_SIZE);
         gtk_button_set_image(GTK_BUTTON(stop_button), stop_image);
         gtk_box_pack_start(GTK_BOX(hbox), stop_button, FALSE, FALSE, 0);
         g_signal_connect(stop_button, "clicked", G_CALLBACK(on_stop_button_clicked_confirm), NULL);
 
         play_pause_button = gtk_button_new();
-        GtkWidget *play_image = gtk_image_new_from_icon_name("media-playback-start", GTK_ICON_SIZE_SMALL_TOOLBAR);
+        GtkWidget *play_image = gtk_image_new_from_icon_name("media-playback-start", ICON_SIZE);
         gtk_button_set_image(GTK_BUTTON(play_pause_button), play_image);
         gtk_box_pack_start(GTK_BOX(hbox), play_pause_button, FALSE, FALSE, 0);
         g_signal_connect(play_pause_button, "clicked", G_CALLBACK(on_play_pause_button_clicked), NULL);
